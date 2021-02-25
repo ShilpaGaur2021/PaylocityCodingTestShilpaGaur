@@ -1,0 +1,97 @@
+﻿@model PaylocityWeb.Models.BenefitsModel
+@{
+    ViewBag.Title = "Calculate";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Calculate Employee Benefits Cost</h2>
+@using (Html.BeginForm("Calculate", "Benefits"))
+{
+    <div class="alert alert-success">
+       To  Calculate an total benefit cost. please add Employee and Dependent information below.
+    </div>
+
+
+    <div class="card">
+        <div class="card-header"><center><b>Employee</b></center></div>
+        <div class="card-body">
+            <div style="text-align:center">
+                <div class="row">
+                   <div class="col-12 pb-3 pt-3" style="float: left;">
+                            @Html.LabelFor(m => m.Employee.FirstName)
+                            @Html.TextBoxFor(m => m.Employee.FirstName, new { @class = "col-md-12", @style = "float: left;" })
+                            @Html.ValidationMessageFor(m => m.Employee.FirstName, null, new { @class = "text-danger" })
+                        </div>
+                        &nbsp;
+                        <div class="col-12 pb-3 pt-3" style="float: right;">
+                            @Html.LabelFor(m => m.Employee.LastName)
+                            @Html.TextBoxFor(m => m.Employee.LastName, new { @class = "col-md-12", @style = "float: right;" })
+                            @Html.ValidationMessageFor(m => m.Employee.LastName, null, new { @class = "text-danger" })
+                        </div>
+
+                    </div>
+                </div>
+
+        </div>
+        
+        <div class="card-footer">
+        </div>
+        <div class="card">
+            <center>
+                <div class="card-body">
+                    <input type="button" class="btn btn-primary" id="adddependent" name="adddependent" value="Add Dependent" />
+                </div>
+
+                <div class="card">
+                    <div class="card-header"><b>Dependents</b></div>
+
+                    <div class="card-body">
+                        <center>
+                            <div id="new-Dependent">
+                                @foreach (var dependent in Model.Dependents)
+                                {
+                                    <partial name="__Dependent" model="Model.Dependents" />
+                                }
+
+                            </div>
+                        </center>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <center>
+                        <div class="card-body">
+                            <button class="btn btn-primary" type="submit">Calculate Employee Benefits Cost</button>
+                            <button type="submit" asp-action="Index" asp-controller="Home" class="btn btn-success">Home</button>
+                            </div>
+                    </center>
+                </div>
+            </center>
+        </div>
+
+    </div>
+
+<div>
+    &nbsp;
+</div>
+
+ @section Scripts
+            {
+        <script type="text/javascript">
+            $('#adddependent').on('click',
+                function () {
+                    $.ajax({
+                        async: false,
+                        url: '/Benefits/AddNewDependent'
+                    }).done(function (partialView) {
+                        $('#new-Dependent').append(partialView);
+                    });
+                });
+
+            $("#deleteRow").live("click",
+                function () {
+                    $(this).parents("#employeeRow:first").remove();
+                    return false;
+                });
+        </script>
+    }
+}
