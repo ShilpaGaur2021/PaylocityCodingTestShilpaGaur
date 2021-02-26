@@ -13,7 +13,7 @@ using System.Web;
 using PaylocityWeb.BusinessRules;
 using PaylocityWeb.Models;
 
-namespace ShilpaGaurPaylocityBenefitsChallengeTest.Controllers
+namespace PaylocityWeb.Controllers
 {
     public class BenefitsController : Controller
     {
